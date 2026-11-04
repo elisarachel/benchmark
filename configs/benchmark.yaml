@@ -1,0 +1,23 @@
+# Contrato do pm25bench v0.1 — igual para todos os modelos.
+# Os dados são baixados (e verificados por hash) dos repositórios da turma.
+data:
+  source: download
+  station: 73          # Congonhas (São Paulo)
+  min_hours: 18        # horas válidas mínimas para a média diária
+  train_end: 2019-12-31
+  val_end: 2021-12-31  # teste: 2022-2024
+  gap_days: 7
+
+models:
+  - name: persistence
+  - name: climatology
+  - name: reanalysis_raw
+  - name: linear_regression
+
+n_context: 7           # dias de contexto (t-6 ... t)
+leads: [0, 1, 2, 3]    # 0 = o próprio dia t
+thresholds: [15, 25, 50]
+block_days: 7
+n_boot: 1000
+seed: 42
+output_dir: results

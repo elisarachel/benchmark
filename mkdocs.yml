@@ -1,0 +1,19 @@
+site_name: pm25bench
+site_description: Benchmark aberto de previsão de MP2,5 com a reanálise do SISAM
+theme:
+  name: material
+  language: pt-BR
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_source: false
+nav:
+  - Início: index.md
+  - Guia rápido: quickstart.md
+  - Protocolo: protocol.md
+  - Seu modelo (plugin): plugins.md
+  - API: api.md

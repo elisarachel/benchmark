@@ -1,0 +1,77 @@
+codigo,estacao,municipio,cd_mun,lat,lon,mp25
+63,Santana,São Paulo,3550308,-23.50599,-46.62896,ativo
+64,Santo Amaro,São Paulo,3550308,-23.65498,-46.71,ativo
+65,Mauá,Mauá,3529401,-23.66855,-46.466,ativo
+66,Cubatão-V.Parisi,Cubatão,3513504,-23.8492,-46.38941,não monitorado
+67,Sorocaba,Sorocaba,3552205,-23.50243,-47.47903,ativo
+72,Parque D.Pedro II,São Paulo,3550308,-23.54486,-46.62777,ativo
+73,Congonhas,São Paulo,3550308,-23.61632,-46.66347,ativo
+83,Ibirapuera,São Paulo,3550308,-23.59184,-46.66069,ativo
+84,Lapa,São Paulo,3550308,-23.5094,-46.70158,não monitorado
+85,Mooca,São Paulo,3550308,-23.54973,-46.60042,ativo
+86,São Caetano do Sul,São Caetano do Sul,3548807,-23.61844,-46.55635,ativo
+87,Cubatão-Centro,Cubatão,3513504,-23.87903,-46.41848,ativo
+88,S.José Campos,São José dos Campos,3549904,-23.18789,-45.8712,não monitorado
+89,Campinas-Centro,Campinas,3509502,-22.90252,-47.05721,não monitorado
+90,Cambuci,São Paulo,3550308,-23.56771,-46.61227,não monitorado
+91,Cerqueira César,São Paulo,3550308,-23.55354,-46.6727,ativo
+92,Diadema,Diadema,3513801,-23.68594,-46.6117,ativo
+94,Centro,São Paulo,3550308,-23.54781,-46.64241,não monitorado
+95,Cid.Universitária-USP-Ipen,São Paulo,3550308,-23.56627,-46.7376,ativo
+96,N.Senhora do Ó,São Paulo,3550308,-23.4801,-46.69205,ativo
+97,Itaquera,São Paulo,3550308,-23.58001,-46.46665,ativo
+98,Grajaú-Parelheiros,São Paulo,3550308,-23.77627,-46.69696,ativo
+99,Pinheiros,São Paulo,3550308,-23.56146,-46.70202,ativo
+100,S.André-Capuava,Santo André,3547809,-23.6398,-46.49164,ativo
+101,S.André-Centro,Santo André,3547809,-23.64562,-46.53633,não monitorado
+103,Taboão da Serra,Taboão da Serra,3552809,-23.60932,-46.75829,ativo
+105,Americana-Vila Sta Maria,Americana,3501608,-22.72425,-47.33955,não monitorado
+106,Araraquara,Araraquara,3503208,-21.78252,-48.18583,não monitorado
+107,Araçatuba,Araçatuba,3502804,-21.18684,-50.43932,não monitorado
+108,Bauru,Bauru,3506003,-22.32673,-49.0928,ativo
+109,Jundiaí,Jundiaí,3525904,-23.192,-46.8971,ativo
+110,Jaú,Jaú,3525300,-22.29862,-48.56746,não monitorado
+111,Marília,Marília,3529005,-22.19981,-49.95997,não monitorado
+112,Paulínia-Sul,Paulínia,3536505,-22.78681,-47.13656,não monitorado
+113,Piracicaba,Piracicaba,3538709,-22.70122,-47.64965,ativo
+114,Presidente Prudente,Presidente Prudente,3541406,-22.11994,-51.40878,ativo
+115,Ribeirão Preto-Ipiranga,Ribeirão Preto,3543402,-21.15394,-47.82848,não monitorado
+116,São José do Rio Preto,São José do Rio Preto,3549805,-20.78469,-49.39828,ativo
+117,Paulínia,Paulínia,3536505,-22.77232,-47.15484,não monitorado
+118,Guarulhos,Guarulhos,3518800,-23.46321,-46.49621,não monitorado
+119,Cubatão-Vale do Mogi,Cubatão,3513504,-23.83152,-46.36916,não monitorado
+120,Osasco,Osasco,3534401,-23.52672,-46.79208,ativo
+236,S.Miguel Paulista,São Paulo,3550308,-23.49853,-46.4448,não monitorado
+248,Catanduva,Catanduva,3511102,-21.14204,-48.98313,não monitorado
+254,S.André-Paço Municipal,Santo André,3547809,-23.65699,-46.53092,não monitorado
+256,Tatuí,Tatuí,3554003,-23.36075,-47.8708,não monitorado
+258,Santos,Santos,3548500,-23.9631,-46.32103,não monitorado
+259,Jacareí,Jacareí,3524402,-23.2942,-45.96823,não monitorado
+260,Santos-Ponta da Praia,Santos,3548500,-23.98115,-46.30028,ativo
+262,Interlagos,São Paulo,3550308,-23.68051,-46.67504,ativo
+263,Carapicuíba,Carapicuíba,3510609,-23.5314,-46.83578,ativo
+264,Guarulhos-Paço Municipal,Guarulhos,3518800,-23.45553,-46.51853,ativo
+266,Itaim Paulista,São Paulo,3550308,-23.50155,-46.42074,ativo
+268,Pirassununga,Pirassununga,3539301,-22.00771,-47.42756,não monitorado
+269,Capão Redondo,São Paulo,3550308,-23.66841,-46.78013,ativo
+270,Marg.Tietê-Pte Remédios,São Paulo,3550308,-23.51871,-46.74332,ativo
+272,S.Bernardo-Centro,São Bernardo do Campo,3548708,-23.69863,-46.54613,ativo
+273,Santa Gertrudes,Santa Gertrudes,3546702,-22.45996,-47.5363,ativo
+275,Campinas-V.União,Campinas,3509502,-22.94673,-47.11928,ativo
+276,Campinas-Taquaral,Campinas,3509502,-22.87462,-47.05897,ativo
+277,S.José Campos-Jd.Satelite,São José dos Campos,3549904,-23.22365,-45.8908,ativo
+278,S.José Campos-Vista Verde,São José dos Campos,3549904,-23.1837,-45.8309,não monitorado
+279,Guarulhos-Pimentas,Guarulhos,3518800,-23.44012,-46.40995,ativo
+280,Taubaté,Taubaté,3554102,-23.03235,-45.57581,ativo
+281,Limeira,Limeira,3526902,-22.5636,-47.41431,ativo
+284,Pico do Jaraguá,São Paulo,3550308,-23.45627,-46.7661,ativo
+287,Mogi das Cruzes,Mogi das Cruzes,3530607,-23.51817,-46.18686,não monitorado
+288,Ribeirão Preto,Ribeirão Preto,3543402,-21.17715,-47.81913,ativo
+289,Guaratinguetá,Guaratinguetá,3518404,-22.80192,-45.19112,ativo
+290,Americana,Americana,3501608,-22.72451,-47.34746,não monitorado
+291,Paulínia-Sta Terezinha,Paulínia,3536505,-22.78021,-47.13904,ativo
+292,Rio Claro-Jd.Guanabara,Rio Claro,3543907,-22.43906,-47.58144,ativo
+293,Perus,São Paulo,3550308,-23.41333,-46.75568,ativo
+294,São Sebastião,São Sebastião,3550704,-23.8052,-45.40007,ativo
+295,Sapopemba,São Paulo,3550308,-23.60605,-46.50246,ativo
+296,Av.Salim F.Maluf-Pte Tatuapé,São Paulo,3550308,-23.53533,-46.58408,ativo

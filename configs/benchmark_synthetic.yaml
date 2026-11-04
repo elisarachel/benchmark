@@ -1,0 +1,12 @@
+# Dados sintéticos: roda em segundos, sem baixar nada (útil para testar um plugin).
+data:
+  source: synthetic
+  train_end: 2016-12-31
+  val_end: 2017-06-30
+models:
+  - name: persistence
+  - name: climatology
+  - name: reanalysis_raw
+  - name: linear_regression
+n_boot: 200
+output_dir: results_synthetic

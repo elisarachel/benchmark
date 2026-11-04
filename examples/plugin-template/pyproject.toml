@@ -1,0 +1,18 @@
+[project]
+name = "pm25bench-meumodelo"
+version = "0.1.0"
+description = "Exemplo de plugin de modelo para o pm25bench"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["pm25bench>=0.1,<0.2"]
+
+# É esta seção que faz o pm25bench encontrar o seu modelo.
+[project.entry-points."pm25bench.models"]
+meumodelo = "pm25bench_meumodelo:MeuModelo"
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pytest>=8"]
