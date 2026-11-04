@@ -18,9 +18,6 @@ leitura de dados nem avaliação.
 **API pública mínima:** `load_config`, `run_benchmark`, `load_model`, `Forecaster`,
 `make_samples`, `split_by_time`, `pm25bench.metrics.*`. O resto é interno.
 
-**Fora do escopo:** framework de treino, visualização sofisticada, operação em tempo real
-(Docker foi retirado desta versão).
-
 ## O contrato do pm25bench v0.1
 
 Igual para todos os modelos. Mudar qualquer item é uma *breaking change* (nova versão MINOR).
@@ -99,7 +96,3 @@ uv run --group docs mkdocs serve
 
 Commits convencionais (`feat:`, `fix:`, `docs:`, `test:`…), uma branch curta por assunto e PR
 para a `main`. Uma tag `v*` publica no TestPyPI.
-
-## Licença e citação
-
-MIT. Para citar, veja `CITATION.cff`.
