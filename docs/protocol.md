@@ -61,3 +61,42 @@ CONAMA 491/2018) e 50 µg/m³ (padrão intermediário PI-2).
 
 Sempre **por lead e por limiar**: nenhum número único decide. O IC 95% vem de bootstrap
 reamostrando semanas inteiras (blocos de 7 dias), não dias isolados.
+
+## Trilha opcional: previsão do CAMS
+
+No contrato padrão, os leads 1 a 3 recebem só a reanálise até *t* e a observação até
+*t*−1, sem nenhuma informação de modelo sobre os dias futuros, e a reanálise do dia *t* nem
+existe no momento real da emissão. A trilha de previsão acrescenta as previsões do CAMS
+como entrada, para permitir uma **previsão calibrada** (*Model Output Statistics*):
+corrigir a previsão emitida em *t* para *t*+*k* usando as observações até *t*−1.
+
+A trilha é **opcional e desligada por padrão**. Sem `cams_forecast_dir` (ou
+`synthetic_forecast`) no YAML, a tabela, as amostras, os resultados e o `dataset_hash` são
+idênticos aos do contrato padrão.
+
+**Colunas.** `fc_pm2_5_l{k}`, na linha da data de emissão *t*, é a média diária (dia
+CETESB) da previsão de MP2,5 emitida em *t* para o dia *t*+*k*, em µg/m³, interpolada
+bilinearmente na estação. Outras variáveis seguem o mesmo padrão (`fc_pm10_l{k}`,
+`fc_no2_l{k}`…). Todo nome de coluna de previsão começa com `fc_`.
+
+**Rodada.** A previsão emitida às 00 UTC do dia *t* (21h de *t*−1 no horário local), que
+fica disponível na manhã do dia *t*. O dia CETESB *D* vai de 01:00 a 24:00 local (UTC−3),
+ou seja, de 04 UTC de *D* a 03 UTC de *D*+1. A partir da rodada 00 UTC de *t*, o dia
+*t*+*k* corresponde às horas de previsão 4 + 24*k* a 27 + 24*k*. A média exige pelo menos
+18 das 24 horas, a mesma regra das observações.
+
+**Disponibilidade.** No contexto, a linha de cada dia *d* traz as previsões **emitidas em
+*d***. A linha *t* traz a previsão para *t*, *t*+1, *t*+2 e *t*+3, toda ela disponível no
+momento da emissão; nenhuma previsão do contexto foi emitida depois de *t*. Uma amostra só
+entra se as colunas `fc_*` estiverem completas em todos os dias do contexto, a mesma regra
+da reanálise.
+
+**Trilha separada.** As previsões do CAMS no ADS começam em 2015, e a regra de completude
+descarta as amostras sem previsão. O conjunto de amostras de treino e de teste muda, então
+os resultados formam uma trilha à parte, comparável só dentro dela. O `metadata.json`
+registra `"forecast": true` e o `leaderboard.md` traz o aviso "Trilha: previsão do CAMS
+(não comparável com o leaderboard padrão)". O baseline da trilha é o `forecast_raw`, a
+previsão do CAMS sem correção.
+
+Configurações: `configs/benchmark_forecast_local.yaml` (dados reais, previsões em
+`../benchmark_cams_forecast/data`) e `configs/benchmark_synthetic_forecast.yaml`.

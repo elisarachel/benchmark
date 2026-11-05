@@ -3,6 +3,12 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões
 seguem o [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+
+### Adicionado
+
+- Previsões do CAMS como fonte de dados opcional (trilha previsão) e baseline `forecast_raw`.
+
 ## [0.1.0] - 2026-11-04
 
 ### Adicionado

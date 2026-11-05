@@ -39,6 +39,12 @@ CONAMA 491/2018 (25 µg/m³) e o padrão intermediário PI-2 (50 µg/m³).
 **Regras do protocolo:** `fit` só vê treino e validação; o teste nunca entra no ajuste
 nem na escolha de hiperparâmetros. A observação do dia *t* nunca está no contexto.
 
+**Trilha opcional de previsão.** Com `data.cams_forecast_dir` no YAML, as previsões diárias
+do CAMS (rodada 00 UTC) entram no contexto como colunas `fc_*`, e o baseline `forecast_raw`
+fica disponível. A trilha é desligada por padrão e muda o conjunto de amostras, então seus
+resultados não se comparam com o leaderboard padrão. Veja
+[Trilha opcional: previsão do CAMS](docs/protocol.md#trilha-opcional-previsao-do-cams).
+
 ## Estrutura
 
 ```
