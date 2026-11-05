@@ -13,6 +13,7 @@ from pm25bench.models import (
     Forecaster,
     LinearRegression,
     Persistence,
+    RawForecast,
     RawReanalysis,
     available,
     check_prediction,
@@ -155,3 +156,50 @@ def test_resultado_tem_datas_alvo(tmp_path):
     res = run_benchmark(_cfg(tmp_path, n_boot=0))
     p = res.predictions
     assert (p["target_date"] - p["issue_date"] == pd.to_timedelta(p["lead"], unit="D")).all()
+
+
+# ---------------------------------------------------------------- trilha opcional de previsão
+
+
+def test_forecast_raw_cumpre_o_protocolo():
+    train, val, test = split_by_time(make_synthetic(forecast=True), "2016-12-31", "2017-06-30")
+    model = load_model("forecast_raw")
+    assert isinstance(model, RawForecast) and isinstance(model, Forecaster)
+    model.fit(train, val)
+    s = next(make_samples(test, 7, LEADS))
+    pred = check_prediction(model.predict(s.context, LEADS), LEADS, model.name)
+    esperado = [s.context[f"fc_pm2_5_l{k}"].iloc[-1] for k in LEADS]
+    assert np.allclose(pred, esperado)
+
+
+def test_forecast_raw_sem_previsao_falha(data):
+    _, _, test = data
+    s = next(make_samples(test, 7, LEADS))
+    with pytest.raises(KeyError, match="informe data.cams_forecast_dir"):
+        RawForecast().predict(s.context, LEADS)
+
+
+def test_runner_trilha_previsao(tmp_path):
+    cfg = _cfg(
+        tmp_path,
+        data={
+            "source": "synthetic",
+            "train_end": "2016-12-31",
+            "val_end": "2017-06-30",
+            "synthetic_forecast": True,
+        },
+        models=[{"name": "persistence"}, {"name": "forecast_raw"}],
+    )
+    result = run_benchmark(cfg)
+    assert result.metadata["forecast"] is True
+    board = write_report(result, cfg.output_dir).read_text(encoding="utf-8")
+    assert "Trilha: previsão do CAMS" in board
+    meta = json.loads((tmp_path / "out" / "metadata.json").read_text())
+    assert meta["forecast"] is True
+
+
+def test_runner_padrao_sem_trilha(tmp_path):
+    result = run_benchmark(_cfg(tmp_path, n_boot=0))
+    assert result.metadata["forecast"] is False
+    board = write_report(result, tmp_path / "out").read_text(encoding="utf-8")
+    assert "Trilha" not in board

@@ -8,8 +8,10 @@ from pm25bench.data import (
     build_dataset,
     daily_mean,
     dataset_hash,
+    forecast_columns,
     make_samples,
     make_synthetic,
+    read_cams_forecast,
     read_sisam,
     sisam_files,
     split_by_time,
@@ -126,3 +128,78 @@ def test_sisam_municipio_inexistente(tmp_path):
         read_sisam(sisam_files(sisam), 1234567)
     with pytest.raises(FileNotFoundError):
         sisam_files(tmp_path / "vazio")
+
+
+# ---------------------------------------------------------------- trilha opcional de previsão
+
+#: Hash de make_synthetic() na main (edce5eb), antes da trilha de previsão existir.
+HASH_SINTETICO_V01 = "sha256:a68692cd5a4044ed405a11d10dc7080880c9f5edc881bbb3009ee0ee4ce1d5d9"
+#: Colunas de previsão geradas pelo make_synthetic(forecast=True).
+FC_COLS = [f"fc_pm2_5_l{k}" for k in range(4)]
+
+
+def test_regressao_hash_padrao_inalterado():
+    # Garante que a trilha de previsão não mudou nada para quem usa o contrato padrão.
+    assert dataset_hash(make_synthetic()) == HASH_SINTETICO_V01
+
+
+def test_sintetico_com_previsao_tem_colunas_fc():
+    df = make_synthetic(forecast=True)
+    assert forecast_columns(df) == FC_COLS
+    assert df.attrs["forecast"] is True
+    # as colunas antigas são as mesmas, com os mesmos valores
+    pd.testing.assert_frame_equal(df[[TARGET, *REANALYSIS_FEATURES]], make_synthetic())
+    # previsão para além do fim da série é NaN
+    assert df["fc_pm2_5_l3"].iloc[-3:].isna().all()
+
+
+def test_amostras_com_previsao():
+    df = make_synthetic(forecast=True, missing_fraction=0.0).iloc[:60].copy()
+    samples = list(make_samples(df, n_context=7, leads=[0, 1, 2, 3]))
+    s = samples[0]
+    # o contexto traz as colunas fc_* e a obs de t continua escondida
+    assert set(FC_COLS) <= set(s.context.columns)
+    assert np.isnan(s.context[TARGET].iloc[-1])
+    # amostras com fc_* faltando em algum dia do contexto são descartadas
+    buraco = df.index[20]
+    df.loc[buraco, "fc_pm2_5_l2"] = np.nan
+    datas = {a.issue_date for a in make_samples(df, n_context=7, leads=[0, 1, 2, 3])}
+    afetadas = {buraco + pd.Timedelta(days=d) for d in range(7)}
+    assert not (datas & afetadas)
+    assert len(datas) == len(samples) - len(afetadas)
+
+
+def test_hash_muda_com_previsao():
+    assert dataset_hash(make_synthetic(forecast=True)) != dataset_hash(make_synthetic())
+
+
+def test_read_cams_forecast(tmp_path):
+    pasta = tmp_path / "73"
+    pasta.mkdir()
+    pd.DataFrame(
+        {"date": ["2020-01-02", "2020-01-01"], "fc_pm2_5_l0": [2.0, 1.0], "outra": [9, 9]}
+    ).to_csv(pasta / "2020.csv", index=False)
+    fc = read_cams_forecast(tmp_path, 73)
+    assert list(fc.columns) == ["fc_pm2_5_l0"]
+    assert list(fc.index) == [pd.Timestamp("2020-01-01"), pd.Timestamp("2020-01-02")]
+    assert fc["fc_pm2_5_l0"].dtype == "float64"
+    with pytest.raises(FileNotFoundError):
+        read_cams_forecast(tmp_path, 99)
+
+
+def test_build_dataset_com_previsao(tmp_path):
+    sisam, cetesb = _write_fake_repos(tmp_path)
+    pasta = tmp_path / "fc" / "73"
+    pasta.mkdir(parents=True)
+    pd.DataFrame({"date": ["2020-01-03"], "fc_pm2_5_l0": [7.0]}).to_csv(
+        pasta / "2020.csv", index=False
+    )
+    df = build_dataset(sisam, cetesb, station=73, cams_forecast_dir=tmp_path / "fc")
+    assert list(df.columns) == [TARGET, *REANALYSIS_FEATURES, "fc_pm2_5_l0"]
+    assert df.attrs["forecast"] is True
+    assert df.loc["2020-01-03", "fc_pm2_5_l0"] == 7.0
+    assert df["fc_pm2_5_l0"].notna().sum() == 1
+    # sem a pasta, a tabela é a do contrato padrão
+    padrao = build_dataset(sisam, cetesb, station=73)
+    pd.testing.assert_frame_equal(df[[TARGET, *REANALYSIS_FEATURES]], padrao)
+    assert "forecast" not in padrao.attrs
