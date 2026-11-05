@@ -26,20 +26,27 @@ class DataConfig(BaseModel):
     train_end: date = date(2019, 12, 31)
     val_end: date = date(2021, 12, 31)
     gap_days: int = Field(7, ge=0)
+    #: Trilha opcional de previsão: pasta ``data/`` do repositório de previsões do CAMS
+    #: (``source: local`` ou ``download``; nesta versão as previsões vêm sempre de pasta local).
+    cams_forecast_dir: Path | None = None
+    #: Trilha opcional de previsão com dados sintéticos (``source: synthetic``).
+    synthetic_forecast: bool = False
 
     def load(self) -> pd.DataFrame:
         """Carrega a tabela diária conforme ``source``."""
         from pm25bench.data import build_dataset, fetch_data, make_synthetic
 
         if self.source == "synthetic":
-            return make_synthetic()
+            return make_synthetic(forecast=self.synthetic_forecast)
         if self.source == "download":
             sisam_dir, cetesb_dir = fetch_data(self.station)
         else:
             if self.sisam_dir is None or self.cetesb_dir is None:
                 raise ValueError("source: local exige sisam_dir e cetesb_dir")
             sisam_dir, cetesb_dir = self.sisam_dir, self.cetesb_dir
-        return build_dataset(sisam_dir, cetesb_dir, self.station, self.min_hours)
+        return build_dataset(
+            sisam_dir, cetesb_dir, self.station, self.min_hours, self.cams_forecast_dir
+        )
 
 
 class ModelSpec(BaseModel):

@@ -27,6 +27,7 @@ persistence = "pm25bench.models.persistence:Persistence"
 climatology = "pm25bench.models.climatology:Climatology"
 reanalysis_raw = "pm25bench.models.reanalysis:RawReanalysis"
 linear_regression = "pm25bench.models.linear:LinearRegression"
+forecast_raw = "pm25bench.models.forecast:RawForecast"
 
 [build-system]
 requires = ["uv_build>=0.11,<0.12"]

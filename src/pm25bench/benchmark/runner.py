@@ -128,5 +128,7 @@ def run_benchmark(cfg: BenchmarkConfig, df: pd.DataFrame | None = None) -> Bench
         "n_test_samples": len(samples),
         "test_period": [str(test.index.min().date()), str(test.index.max().date())],
         "config": cfg.model_dump(mode="json"),
+        # trilha de previsão do CAMS (False no contrato padrão)
+        "forecast": bool(df.attrs.get("forecast", False)),
     }
     return BenchmarkResult(predictions=predictions, scores=scores, metadata=metadata)

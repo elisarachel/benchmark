@@ -1,0 +1,14 @@
+# Trilha opcional de previsão com dados sintéticos: roda em segundos, sem baixar nada.
+data:
+  source: synthetic
+  synthetic_forecast: true
+  train_end: 2016-12-31
+  val_end: 2017-06-30
+models:
+  - name: persistence
+  - name: climatology
+  - name: reanalysis_raw
+  - name: forecast_raw
+  - name: linear_regression
+n_boot: 200
+output_dir: results_synthetic_forecast

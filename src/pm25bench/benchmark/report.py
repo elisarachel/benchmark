@@ -77,6 +77,9 @@ def write_report(result: BenchmarkResult, output_dir: str | Path) -> Path:
         f"Estação {meta.get('station')} · teste {' a '.join(meta.get('test_period', []))} · "
         f"{meta.get('n_test_samples')} amostras · pm25bench {meta.get('pm25bench_version')}"
     )
+    # aviso de trilha: resultados com previsão do CAMS não se comparam com o padrão
+    if meta.get("forecast"):
+        md += ["", "Trilha: previsão do CAMS (não comparável com o leaderboard padrão)"]
     md += ["", f"Dados: `{meta.get('dataset_hash')}`", ""]
     md.append(leaderboard_markdown(result.scores, thresholds))
     board = out / "leaderboard.md"

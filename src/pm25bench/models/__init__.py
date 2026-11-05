@@ -2,6 +2,7 @@
 
 from pm25bench.models.base import Forecaster, check_prediction
 from pm25bench.models.climatology import Climatology
+from pm25bench.models.forecast import RawForecast
 from pm25bench.models.linear import LinearRegression
 from pm25bench.models.persistence import Persistence
 from pm25bench.models.reanalysis import RawReanalysis
@@ -12,6 +13,7 @@ __all__ = [
     "Forecaster",
     "LinearRegression",
     "Persistence",
+    "RawForecast",
     "RawReanalysis",
     "available",
     "check_prediction",

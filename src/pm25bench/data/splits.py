@@ -9,6 +9,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
+from pm25bench.data.cams import forecast_columns
 from pm25bench.data.dataset import TARGET
 from pm25bench.data.sisam import REANALYSIS_FEATURES
 
@@ -47,6 +48,12 @@ class Sample:
     context : pandas.DataFrame
         ``n_context`` dias (t-n+1 ... t) com ``obs`` e ``rea_*``. A ``obs`` do dia t é ``NaN``
         (ainda não foi medida); a reanálise do dia t está disponível.
+
+        Na trilha opcional de previsão, o contexto também traz as colunas ``fc_*``. A linha
+        de cada dia d contém as previsões **emitidas em d** (rodada 00 UTC): ``fc_*_l{k}``
+        na linha d se refere ao dia d + k. Isso inclui a linha t, cujas colunas
+        ``fc_*_l{k}`` são a previsão para t + k, todas disponíveis no momento da emissão.
+        Não há vazamento: nenhuma previsão do contexto foi emitida depois de t.
     target : numpy.ndarray
         ``obs`` nos dias t + lead, para cada lead.
     """
@@ -66,15 +73,21 @@ def make_samples(
     Uma amostra só entra se o contexto estiver completo (reanálise em todos os dias e ``obs``
     em todos os dias antes de t) e se houver observação para todos os leads. Assim, todos os
     modelos são avaliados exatamente nas mesmas amostras.
+
+    Se a tabela tiver colunas ``fc_*`` (trilha de previsão), elas entram no contexto e na
+    verificação de completude, com a mesma regra da reanálise. Sem elas, nada muda.
     """
     if n_context < 2:
         raise ValueError("n_context precisa ser >= 2")
     leads = list(leads)
     obs = df[TARGET].to_numpy()
-    rea_ok = df[REANALYSIS_FEATURES].notna().all(axis=1).to_numpy()
+    # colunas de entrada: reanálise e, na trilha de previsão, as fc_* (vazio no padrão)
+    inputs = [*REANALYSIS_FEATURES, *forecast_columns(df)]
+    # dia completo = todas as entradas presentes (no padrão, idêntico a só a reanálise)
+    rea_ok = df[inputs].notna().all(axis=1).to_numpy()
     obs_ok = ~np.isnan(obs)
     max_lead = max(leads)
-    cols = [TARGET, *REANALYSIS_FEATURES]
+    cols = [TARGET, *inputs]
     for t in range(n_context - 1, len(df) - max_lead):
         lo = t - n_context + 1
         if not (rea_ok[lo : t + 1].all() and obs_ok[lo:t].all()):

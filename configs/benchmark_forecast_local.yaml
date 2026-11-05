@@ -1,0 +1,28 @@
+# Trilha opcional: previsão do CAMS (não comparável com o leaderboard padrão).
+# Igual a benchmark_local.yaml, mais as previsões diárias do CAMS (rodada 00 UTC).
+# Veja "Trilha opcional: previsão do CAMS" em docs/protocol.md.
+data:
+  source: local
+  sisam_dir: ../benchmark_cap_408/dados_sisam_reanalise_2010_2024
+  cetesb_dir: ../benchmark_pm2_5/data
+  cams_forecast_dir: ../benchmark_cams_forecast/data
+  station: 73          # Congonhas (São Paulo)
+  min_hours: 18        # horas válidas mínimas para a média diária
+  train_end: 2019-12-31
+  val_end: 2021-12-31  # teste: 2022-2024
+  gap_days: 7
+
+models:
+  - name: persistence
+  - name: climatology
+  - name: reanalysis_raw
+  - name: forecast_raw
+  - name: linear_regression
+
+n_context: 7           # dias de contexto (t-6 ... t)
+leads: [0, 1, 2, 3]    # 0 = o próprio dia t
+thresholds: [15, 25, 50]
+block_days: 7
+n_boot: 1000
+seed: 42
+output_dir: results_forecast

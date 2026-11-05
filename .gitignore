@@ -16,3 +16,5 @@ wheels/
 site/
 results/
 results_synthetic/
+results_forecast/
+results_synthetic_forecast/
